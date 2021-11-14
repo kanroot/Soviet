@@ -67,16 +67,10 @@ namespace Soviet.Soviet.CameraNode
 		{
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
-			var from = camera.ProjectRayOrigin(eventMouseButton.Position);
-			var to = @from + camera.ProjectRayNormal(eventMouseButton.Position);
-			var n = new Vector3(0, 1, 0);
-			const int d = 0;
-			var t = -(n.Dot(@from) + d) / n.Dot(to);
-			var blockPosition = @from + t * to;
-			var blockSize = 2;
-			blockPosition.x = (float)(Math.Round(blockPosition.x / blockSize) * blockSize);
-			blockPosition.z = (float)(Math.Round(blockPosition.z / blockSize) * blockSize);
-			TileManager.Instance.CreateTileAt((int) TileConstFloor.Grass, blockPosition , (int) GridMapLayer.Floor);
+			var mousePos = GetViewport().GetMousePosition();
+			var projectPos = camera.ProjectPosition(mousePos, 0);
+			projectPos.y = 0;
+			TileManager.Instance.CreateTileAt((int) TileConstFloor.Grass, projectPos , (int) GridMapLayer.Floor);
 		}
 	}
 }
