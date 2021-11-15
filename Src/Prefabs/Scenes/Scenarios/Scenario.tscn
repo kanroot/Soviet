@@ -8,6 +8,7 @@
 [node name="Scenario" type="Spatial"]
 
 [node name="Gimbal" parent="." instance=ExtResource( 2 )]
+speed = Vector3( 25, 25, 25 )
 
 [node name="Floor" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
@@ -16,7 +17,8 @@ data = {
 }
 script = ExtResource( 4 )
 __meta__ = {
-"_editor_clip_": 0
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 2, 0 )
 }
 height = 100
 lenght = 100

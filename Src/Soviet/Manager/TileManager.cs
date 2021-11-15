@@ -33,7 +33,11 @@ namespace Soviet.Soviet.Manager
 
 			var a = debug as DebugNode;
 			a?.GetNodes();
-			
+		}
+
+		public Vector3 GetPositionCell(Vector3 to)
+		{
+			return floor.MapToWorld((int)to.x, (int)to.y, (int)to.z);
 		}
 
 	}

@@ -10,3 +10,4 @@ speed = Vector3( 100, 100, 100 )
 
 [node name="ClippedCamera" type="ClippedCamera" parent="Elevation"]
 transform = Transform( 1, 0, 0, 0, 0.635216, 0.772335, 0, -0.772335, 0.635216, 0, 0, 0 )
+clip_to_areas = true
