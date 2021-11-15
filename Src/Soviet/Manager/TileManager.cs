@@ -16,7 +16,7 @@ namespace Soviet.Soviet.Manager
 		{
 			instance = this;
 			floor = GetTree().CurrentScene.FindNode("Floor") as GridMap;
-			tree = GetTree().CurrentScene.FindNode("Trees") as GridMap;
+			tree = GetTree().CurrentScene.FindNode("Objects") as GridMap;
 			debug = GetTree().CurrentScene.FindNode("DebugNode") as Control;
 		}
 		
@@ -52,9 +52,12 @@ namespace Soviet.Soviet.Manager
 
 	public enum TileConstTree
 	{
-		Cabezon,
-		Seco,
-		Pine
+		TreeOne,
+		TreeTwo,
+		TreeTallOne,
+		TreeTallTwo,
+		TreeThinOne,
+		TreeThinTwo
 	}
 
 	public enum GridMapLayer

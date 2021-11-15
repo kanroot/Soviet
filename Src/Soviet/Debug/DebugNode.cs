@@ -61,9 +61,6 @@ namespace Soviet.Soviet.Debug
 			{
 				var cellPos = (Vector3)cell;
 				var number = floor.GetCellItem((int)cellPos.x, (int)cellPos.y, (int)cellPos.z);
-				grassCount = 0;
-				riverCount = 0;
-				groundCount = 0;
 				switch (number)
 				{
 					case 0:

@@ -79,7 +79,7 @@ namespace Soviet.Soviet.CameraNode
 			Vector3 position = (Vector3) realPos["position"];
 			position.y = 0;
 			position /= 2;
-			TileManager.Instance.CreateTileAt((int) TileConstFloor.Grass, position , (int) GridMapLayer.Floor);
+			TileManager.Instance.CreateTileAt((int) TileConstTree.TreeTallOne, position , (int) GridMapLayer.Tree);
 		}
 	}
 }
