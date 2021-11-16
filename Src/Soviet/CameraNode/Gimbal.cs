@@ -9,14 +9,13 @@ namespace Soviet.Soviet.CameraNode
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
 		private ClippedCamera camera;
 		private Spatial elevation;
-		private int rayLenght = 1000;
-	
+		private readonly int rayLenght = 1000;
 
-	public override void _Ready()
+
+		public override void _Ready()
 		{
 			elevation = FindNode("Elevation") as Spatial;
 			camera = elevation?.FindNode("ClippedCamera") as ClippedCamera;
-			
 		}
 
 		public override void _Process(float delta)
@@ -25,7 +24,6 @@ namespace Soviet.Soviet.CameraNode
 			RotateCameraGimbal(delta);
 			ZoomKeyboard(delta);
 			ZoomMouse(delta);
-			
 		}
 
 		private void GetInputKeyboard(float delta)
@@ -75,11 +73,11 @@ namespace Soviet.Soviet.CameraNode
 			var projectPos = camera.ProjectRayOrigin(mousePos);
 			var to = projectPos + camera.ProjectRayNormal(mousePos) * rayLenght;
 			var space = GetWorld().DirectSpaceState;
-			var realPos = space.IntersectRay(projectPos, to, new Array(), 1);
-			Vector3 position = (Vector3) realPos["position"];
+			var dicIntersect = space.IntersectRay(projectPos, to, new Array(), 1);
+			var position = (Vector3)dicIntersect["position"];
 			position.y = 0;
 			position /= 2;
-			TileManager.Instance.CreateTileAt((int) TileConstTree.TreeTallOne, position , (int) GridMapLayer.Tree);
+			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTallOne, position, (int)GridMapLayer.Tree);
 		}
 	}
 }
