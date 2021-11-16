@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
 
 namespace Soviet.Soviet.Scenes
@@ -16,7 +14,7 @@ namespace Soviet.Soviet.Scenes
 		{
 			CreateGrid();
 		}
-		
+
 		private void CreateGrid()
 		{
 			var startPosition = new Vector3(0, 0, 0);
@@ -24,7 +22,6 @@ namespace Soviet.Soviet.Scenes
 			{
 				SetCellItem((int)startPosition.x + i, (int)startPosition.y, (int)startPosition.z, 2);
 				for (var j = 1; j < height; j++) SetCellItem(i, (int)startPosition.y, (int)startPosition.z + j, 0);
-				
 			}
 		}
 	}

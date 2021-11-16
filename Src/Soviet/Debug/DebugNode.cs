@@ -18,8 +18,8 @@ namespace Soviet.Soviet.Debug
 		private int riverCount;
 		private Label textCountCells;
 		private Label textgrassCount;
-		private Label textRiverCount;
 		private Label textGroundCount;
+		private Label textRiverCount;
 		private VBoxContainer vBoxContainer;
 
 		public override void _Ready()
