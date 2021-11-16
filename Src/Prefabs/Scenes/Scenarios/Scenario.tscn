@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Src/Soviet/Debug/DebugNode.cs" type="Script" id=1]
 [ext_resource path="res://Src/Prefabs/CameraNode/Gimbal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Src/Prefabs/MeshInstance/FloorObjects.tres" type="MeshLibrary" id=3]
 [ext_resource path="res://Src/Soviet/Scenes/Floor.cs" type="Script" id=4]
+[ext_resource path="res://Src/Prefabs/MeshInstance/Trees.tres" type="MeshLibrary" id=5]
 
 [node name="Scenario" type="Spatial"]
 
 [node name="Gimbal" parent="." instance=ExtResource( 2 )]
+speed = Vector3( 25, 25, 25 )
 
 [node name="Floor" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
@@ -16,14 +18,16 @@ data = {
 }
 script = ExtResource( 4 )
 __meta__ = {
-"_editor_clip_": 0
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
 }
 height = 100
 lenght = 100
 
 [node name="Objects" type="GridMap" parent="."]
+mesh_library = ExtResource( 5 )
 data = {
-"cells": PoolIntArray(  )
+"cells": PoolIntArray( 36, 65507, 0 )
 }
 __meta__ = {
 "_editor_clip_": 0

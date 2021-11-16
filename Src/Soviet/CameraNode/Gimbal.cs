@@ -1,5 +1,5 @@
-using System;
 using Godot;
+using Godot.Collections;
 using Soviet.Soviet.Manager;
 
 namespace Soviet.Soviet.CameraNode
@@ -9,6 +9,8 @@ namespace Soviet.Soviet.CameraNode
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
 		private ClippedCamera camera;
 		private Spatial elevation;
+		private readonly int rayLenght = 1000;
+
 
 		public override void _Ready()
 		{
@@ -67,10 +69,15 @@ namespace Soviet.Soviet.CameraNode
 		{
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
-			var mousePos = GetViewport().GetMousePosition();
-			var projectPos = camera.ProjectPosition(mousePos, 0);
-			projectPos.y = 0;
-			TileManager.Instance.CreateTileAt((int) TileConstFloor.Grass, projectPos , (int) GridMapLayer.Floor);
+			var mousePos = eventMouseButton.Position;
+			var projectPos = camera.ProjectRayOrigin(mousePos);
+			var to = projectPos + camera.ProjectRayNormal(mousePos) * rayLenght;
+			var space = GetWorld().DirectSpaceState;
+			var dicIntersect = space.IntersectRay(projectPos, to, new Array(), 1);
+			var position = (Vector3)dicIntersect["position"];
+			position.y = 0;
+			position /= 2;
+			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTallOne, position, (int)GridMapLayer.Tree);
 		}
 	}
 }

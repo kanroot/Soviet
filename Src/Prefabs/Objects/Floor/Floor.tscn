@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Src/Prefabs/Objects/Texture/DarkGrass.tres" type="Material" id=1]
 [ext_resource path="res://Src/Prefabs/Objects/Texture/River.tres" type="Material" id=2]
@@ -33,6 +33,9 @@ surfaces/1 = {
 "vertex_count": 4
 }
 
+[sub_resource type="ConcavePolygonShape" id=4]
+data = PoolVector3Array( 0.97, 0.01, 0.97, -0.97, 0.01, 0.97, 0.97, 0.01, -0.97, 0.97, 0.01, -0.97, -0.97, 0.01, 0.97, -0.97, 0.01, -0.97, 1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, -1 )
+
 [sub_resource type="ArrayMesh" id=2]
 surfaces/0 = {
 "aabb": AABB( -0.97, 0.01, -0.97, 1.94001, 9.99961e-06, 1.94001 ),
@@ -60,6 +63,9 @@ surfaces/1 = {
 "skeleton_aabb": [  ],
 "vertex_count": 4
 }
+
+[sub_resource type="ConcavePolygonShape" id=5]
+data = PoolVector3Array( 0.97, 0.01, 0.97, -0.97, 0.01, 0.97, 0.97, 0.01, -0.97, 0.97, 0.01, -0.97, -0.97, 0.01, 0.97, -0.97, 0.01, -0.97, 1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, -1 )
 
 [sub_resource type="ArrayMesh" id=3]
 surfaces/0 = {
@@ -89,6 +95,9 @@ surfaces/1 = {
 "vertex_count": 4
 }
 
+[sub_resource type="ConcavePolygonShape" id=6]
+data = PoolVector3Array( 0.97, 0.01, 0.97, -0.97, 0.01, 0.97, 0.97, 0.01, -0.97, 0.97, 0.01, -0.97, -0.97, 0.01, 0.97, -0.97, 0.01, -0.97, 1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0, 1, -1, 0, -1 )
+
 [node name="Spatial" type="Spatial"]
 
 [node name="Grass" type="MeshInstance" parent="."]
@@ -96,12 +105,29 @@ mesh = SubResource( 1 )
 material/0 = null
 material/1 = null
 
+[node name="StaticBody" type="StaticBody" parent="Grass"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Grass/StaticBody"]
+shape = SubResource( 4 )
+
 [node name="River" type="MeshInstance" parent="."]
+visible = false
 mesh = SubResource( 2 )
 material/0 = null
 material/1 = null
 
+[node name="StaticBody" type="StaticBody" parent="River"]
+
+[node name="CollisionShape" type="CollisionShape" parent="River/StaticBody"]
+shape = SubResource( 5 )
+
 [node name="Ground" type="MeshInstance" parent="."]
+visible = false
 mesh = SubResource( 3 )
 material/0 = null
 material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="Ground"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
+shape = SubResource( 6 )
