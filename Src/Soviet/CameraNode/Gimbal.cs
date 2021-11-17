@@ -6,7 +6,6 @@ namespace Soviet.Soviet.CameraNode
 {
 	public class Gimbal : Spatial
 	{
-		private readonly int rayLenght = 10000;
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
 		private ClippedCamera camera;
 		private Spatial innerGimbal;
