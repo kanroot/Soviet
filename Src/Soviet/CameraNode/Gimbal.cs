@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Soviet.Soviet.Manager;
 using Soviet.Soviet.Utils;
@@ -21,8 +22,7 @@ namespace Soviet.Soviet.CameraNode
 		{
 			GetInputKeyboard(delta);
 			RotateInnerGimbal(delta);
-			//ZoomKeyboard(delta);
-			ZoomMouse(delta);
+			Zoom(delta);
 		}
 
 		private void GetInputKeyboard(float delta)
@@ -40,33 +40,26 @@ namespace Soviet.Soviet.CameraNode
 		{
 			var velocity = new Vector3(0, 0, 0);
 			if (Input.IsActionPressed("rotate_left")) velocity += innerGimbal.Transform.basis.y;
-
 			if (Input.IsActionPressed("rotate_right")) velocity -= innerGimbal.Transform.basis.y;
-
 			innerGimbal.Rotation += velocity * delta * speed;
 		}
 
-		private void ZoomKeyboard(float delta)
+		private void Zoom(float delta)
 		{
+			if (Translation.y > 25 || Translation.y < 10) return;
 			var velocity = new Vector3(0, 0, 0);
 			if (Input.IsActionPressed("cam_zoom_in")) velocity -= Transform.basis.y;
 			if (Input.IsActionPressed("cam_zoom_out")) velocity += Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
-			Translation += velocity * delta * speed;
-		}
-
-		private void ZoomMouse(float delta)
-		{
-			if (Translation.y > 25 || Translation.y < 10) return;
-			var velocity = new Vector3(0, 0, 0);
 			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
 			velocity = velocity * speed * delta;
 			Translation += velocity;
 			Translation = new Vector3(Translation.x, Mathf.Clamp(Translation.y, 10, 25), Translation.z);
 		}
-
+		
+		
 		public override void _Input(InputEvent @event)
 		{
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
