@@ -14,16 +14,13 @@ namespace Soviet.Soviet.Manager
 		{
 			var mousePos = GetViewport().GetMousePosition();
 			var from = camera.ProjectRayOrigin(mousePos);
-			var to = @from + camera.ProjectRayNormal(mousePos) * rayLenght;
+			var to = from + camera.ProjectRayNormal(mousePos) * rayLenght;
 			var plane = new Plane(Vector3.Up, 0);
-			var position = plane.IntersectRay(@from, to);
-			if (position is null)
-			{
-				return new Vector3();
-			}
-			var gridPos=  tree.WorldToMap( ((Vector3) position).Floor());
+			var position = plane.IntersectRay(from, to);
+			if (position is null) return new Vector3();
+			var gridPos = tree.WorldToMap(((Vector3)position).Floor());
 			gridPos.y = 0;
-			return (Vector3) gridPos;
+			return gridPos;
 		}
 
 		public override void _Ready()
@@ -44,7 +41,6 @@ namespace Soviet.Soviet.Manager
 			var a = debug as DebugNode;
 			a?.GetNodes();
 		}
-		
 	}
 
 

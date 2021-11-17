@@ -1,13 +1,13 @@
-using System;
 using Godot;
+using Godot.Collections;
 using Soviet.Soviet.CameraNode;
 using Soviet.Soviet.Manager;
-using Array = Godot.Collections.Array;
 
 namespace Soviet.Soviet.Debug
 {
 	public class DebugNode : Control
 	{
+		private ClippedCamera camera;
 		private Spatial cameraElevation;
 		private Gimbal cameraGimbal;
 		[Export] private NodePath cameraPath;
@@ -18,17 +18,13 @@ namespace Soviet.Soviet.Debug
 		[Export] private NodePath floorPath;
 		private int grassCount;
 		private int groundCount;
+		private Label mouseToCor;
 		private int riverCount;
 		private Label textCountCells;
 		private Label textgrassCount;
 		private Label textGroundCount;
 		private Label textRiverCount;
-		private Label MouseToCor;
 		private VBoxContainer vBoxContainer;
-		private ClippedCamera camera;
-		private readonly int rayLenght = 10000;
-
-
 
 		public override void _Ready()
 		{
@@ -49,8 +45,7 @@ namespace Soviet.Soviet.Debug
 			textgrassCount.Text = $"Celdas de pasto: {grassCount.ToString()}";
 			textRiverCount.Text = $"Celdas de rio: {riverCount.ToString()}";
 			textGroundCount.Text = $"Celdas de tierra: {groundCount.ToString()}";
-			MouseToCor.Text = $"Posicion del click: {TileManager.Instance.GetCoordinatesGrid(camera).ToString()}";
-			MouseToCor.SetPosition(GetViewport().GetMousePosition());
+			mouseToCor.Text = $"Posicion del click: {TileManager.Instance.GetCoordinatesGrid(camera).ToString()}";
 		}
 
 		public void GetNodes()
@@ -63,12 +58,11 @@ namespace Soviet.Soviet.Debug
 			textgrassCount = vBoxContainer.GetChild<Label>(3);
 			textRiverCount = vBoxContainer.GetChild<Label>(4);
 			textGroundCount = vBoxContainer.GetChild<Label>(5);
-			MouseToCor = vBoxContainer.GetChild<Label>(6);
+			mouseToCor = vBoxContainer.GetChild<Label>(6);
 			countCells = floor.GetUsedCells();
 			GetTypeCells();
 		}
 
-		
 
 		private void GetTypeCells()
 		{

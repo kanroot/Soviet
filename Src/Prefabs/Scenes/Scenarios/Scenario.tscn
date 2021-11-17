@@ -11,7 +11,7 @@
 
 [node name="Gimbal" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
-speed = Vector3( 10, 10, 25 )
+speed = Vector3( 10, 10, 10 )
 
 [node name="Floor" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )

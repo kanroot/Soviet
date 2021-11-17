@@ -6,16 +6,15 @@ namespace Soviet.Soviet.CameraNode
 {
 	public class Gimbal : Spatial
 	{
+		private readonly int rayLenght = 10000;
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
 		private ClippedCamera camera;
 		private Spatial innerGimbal;
-		private readonly int rayLenght = 10000;
 
 
 		public override void _Ready()
 		{
 			innerGimbal = this.GetChildFromType<Spatial>();
-			GD.Print(innerGimbal.Name);
 			camera = innerGimbal?.GetChildFromType<ClippedCamera>();
 		}
 
@@ -41,18 +40,11 @@ namespace Soviet.Soviet.CameraNode
 		private void RotateInnerGimbal(float delta)
 		{
 			var velocity = new Vector3(0, 0, 0);
-			if (Input.IsActionPressed("rotate_left"))
-			{
-				velocity += innerGimbal.Transform.basis.y;
-			}
+			if (Input.IsActionPressed("rotate_left")) velocity += innerGimbal.Transform.basis.y;
 
-			if (Input.IsActionPressed("rotate_right"))
-			{
-				velocity -= innerGimbal.Transform.basis.y;
-			}
+			if (Input.IsActionPressed("rotate_right")) velocity -= innerGimbal.Transform.basis.y;
 
-			innerGimbal.Rotation = velocity * delta * speed;
-
+			innerGimbal.Rotation += velocity * delta * speed;
 		}
 
 		private void ZoomKeyboard(float delta)
@@ -67,10 +59,7 @@ namespace Soviet.Soviet.CameraNode
 
 		private void ZoomMouse(float delta)
 		{
-			if (Translation.y > 25 || Translation.y < 10)
-			{
-				return;
-			}
+			if (Translation.y > 25 || Translation.y < 10) return;
 			var velocity = new Vector3(0, 0, 0);
 			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
@@ -86,7 +75,5 @@ namespace Soviet.Soviet.CameraNode
 			var position = TileManager.Instance.GetCoordinatesGrid(camera);
 			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTallOne, position, (int)GridMapLayer.Tree);
 		}
-
-		
 	}
 }
