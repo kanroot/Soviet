@@ -22,6 +22,15 @@ config/icon="res://icon.png"
 
 TileManager="*res://Src/Prefabs/Scenes/Manager/TileManager.tscn"
 
+[display]
+
+window/size/width=1920
+window/size/height=1080
+
+[global]
+
+VIEW=false
+
 [input]
 
 ui_left={

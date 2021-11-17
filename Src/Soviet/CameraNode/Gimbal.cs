@@ -72,7 +72,7 @@ namespace Soviet.Soviet.CameraNode
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
 			var position = TileManager.Instance.GetCoordinatesGrid(camera);
-			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTallOne, position, (int)GridMapLayer.Tree);
+			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTwo, position, (int)GridMapLayer.Tree);
 		}
 	}
 }
