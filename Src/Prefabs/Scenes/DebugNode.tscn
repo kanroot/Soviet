@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Src/Soviet/Debug/DebugNode.cs" type="Script" id=1]
+
+[node name="DebugNode" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+cameraPath = NodePath("../Gimbal")
+floorPath = NodePath("../Floor")
+
+[node name="List" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pos" type="Label" parent="List"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="Elevation" type="Label" parent="List"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 32.0
+
+[node name="CountCells" type="Label" parent="List"]
+margin_top = 36.0
+margin_right = 40.0
+margin_bottom = 50.0
+
+[node name="Grass" type="Label" parent="List"]
+margin_top = 54.0
+margin_right = 40.0
+margin_bottom = 68.0
+
+[node name="River" type="Label" parent="List"]
+margin_top = 72.0
+margin_right = 40.0
+margin_bottom = 86.0
+
+[node name="Ground" type="Label" parent="List"]
+margin_top = 90.0
+margin_right = 40.0
+margin_bottom = 104.0
+
+[node name="ClickPos" type="Label" parent="List"]
+margin_top = 108.0
+margin_right = 40.0
+margin_bottom = 122.0

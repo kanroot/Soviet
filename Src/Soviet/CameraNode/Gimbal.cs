@@ -1,6 +1,6 @@
 using Godot;
-using Godot.Collections;
 using Soviet.Soviet.Manager;
+using Soviet.Soviet.Utils;
 
 namespace Soviet.Soviet.CameraNode
 {
@@ -8,21 +8,22 @@ namespace Soviet.Soviet.CameraNode
 	{
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
 		private ClippedCamera camera;
-		private Spatial elevation;
-		private readonly int rayLenght = 1000;
+		private Spatial innerGimbal;
+		private readonly int rayLenght = 10000;
 
 
 		public override void _Ready()
 		{
-			elevation = FindNode("Elevation") as Spatial;
-			camera = elevation?.FindNode("ClippedCamera") as ClippedCamera;
+			innerGimbal = this.GetChildFromType<Spatial>();
+			GD.Print(innerGimbal.Name);
+			camera = innerGimbal?.GetChildFromType<ClippedCamera>();
 		}
 
 		public override void _Process(float delta)
 		{
 			GetInputKeyboard(delta);
-			RotateCameraGimbal(delta);
-			ZoomKeyboard(delta);
+			RotateInnerGimbal(delta);
+			//ZoomKeyboard(delta);
 			ZoomMouse(delta);
 		}
 
@@ -37,47 +38,55 @@ namespace Soviet.Soviet.CameraNode
 			Translation += velocity * delta * speed;
 		}
 
-		private void RotateCameraGimbal(float delta)
+		private void RotateInnerGimbal(float delta)
 		{
 			var velocity = new Vector3(0, 0, 0);
-			if (Input.IsActionPressed("rotate_left")) velocity += Transform.basis.y;
-			if (Input.IsActionPressed("rotate_right")) velocity -= Transform.basis.y;
-			Rotation += velocity * delta * speed;
+			if (Input.IsActionPressed("rotate_left"))
+			{
+				velocity += innerGimbal.Transform.basis.y;
+			}
+
+			if (Input.IsActionPressed("rotate_right"))
+			{
+				velocity -= innerGimbal.Transform.basis.y;
+			}
+
+			innerGimbal.Rotation = velocity * delta * speed;
+
 		}
 
 		private void ZoomKeyboard(float delta)
 		{
 			var velocity = new Vector3(0, 0, 0);
-			if (Input.IsActionPressed("cam_zoom_in")) velocity -= elevation.Transform.basis.y;
-			if (Input.IsActionPressed("cam_zoom_out")) velocity += elevation.Transform.basis.y;
-			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= elevation.Transform.basis.y;
-			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += elevation.Transform.basis.y;
-			elevation.Translation += velocity * delta * speed;
+			if (Input.IsActionPressed("cam_zoom_in")) velocity -= Transform.basis.y;
+			if (Input.IsActionPressed("cam_zoom_out")) velocity += Transform.basis.y;
+			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
+			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
+			Translation += velocity * delta * speed;
 		}
 
 		private void ZoomMouse(float delta)
 		{
+			if (Translation.y > 25 || Translation.y < 10)
+			{
+				return;
+			}
 			var velocity = new Vector3(0, 0, 0);
-			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= elevation.Transform.basis.y;
-			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += elevation.Transform.basis.y;
-			var localSpeedMouse = speed;
-			localSpeedMouse.y += 150;
-			elevation.Translation += velocity * delta * localSpeedMouse;
+			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
+			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
+			velocity = velocity * speed * delta;
+			Translation += velocity;
+			Translation = new Vector3(Translation.x, Mathf.Clamp(Translation.y, 10, 25), Translation.z);
 		}
 
 		public override void _Input(InputEvent @event)
 		{
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
-			var mousePos = eventMouseButton.Position;
-			var projectPos = camera.ProjectRayOrigin(mousePos);
-			var to = projectPos + camera.ProjectRayNormal(mousePos) * rayLenght;
-			var space = GetWorld().DirectSpaceState;
-			var dicIntersect = space.IntersectRay(projectPos, to, new Array(), 1);
-			var position = (Vector3)dicIntersect["position"];
-			position.y = 0;
-			position /= 2;
+			var position = TileManager.Instance.GetCoordinatesGrid(camera);
 			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTallOne, position, (int)GridMapLayer.Tree);
 		}
+
+		
 	}
 }

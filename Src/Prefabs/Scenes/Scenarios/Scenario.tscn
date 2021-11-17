@@ -1,15 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Src/Soviet/Debug/DebugNode.cs" type="Script" id=1]
+[ext_resource path="res://Src/Prefabs/Scenes/DebugNode.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Src/Prefabs/CameraNode/Gimbal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Src/Prefabs/MeshInstance/FloorObjects.tres" type="MeshLibrary" id=3]
 [ext_resource path="res://Src/Soviet/Scenes/Floor.cs" type="Script" id=4]
 [ext_resource path="res://Src/Prefabs/MeshInstance/Trees.tres" type="MeshLibrary" id=5]
+[ext_resource path="res://Src/Prefabs/Scenes/UI/SelectObject.tscn" type="PackedScene" id=6]
 
 [node name="Scenario" type="Spatial"]
 
 [node name="Gimbal" parent="." instance=ExtResource( 2 )]
-speed = Vector3( 25, 25, 25 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
+speed = Vector3( 10, 10, 25 )
 
 [node name="Floor" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
@@ -27,54 +29,13 @@ lenght = 100
 [node name="Objects" type="GridMap" parent="."]
 mesh_library = ExtResource( 5 )
 data = {
-"cells": PoolIntArray( 36, 65507, 0 )
+"cells": PoolIntArray(  )
 }
 __meta__ = {
-"_editor_clip_": 0
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
 }
 
-[node name="DebugNode" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-cameraPath = NodePath("../Gimbal")
-floorPath = NodePath("../Floor")
+[node name="DebugNode" parent="." instance=ExtResource( 1 )]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DebugNode"]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Pos" type="Label" parent="DebugNode/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-
-[node name="Elevation" type="Label" parent="DebugNode/VBoxContainer"]
-margin_top = 18.0
-margin_right = 40.0
-margin_bottom = 32.0
-
-[node name="Label3" type="Label" parent="DebugNode/VBoxContainer"]
-margin_top = 36.0
-margin_right = 40.0
-margin_bottom = 50.0
-
-[node name="Label4" type="Label" parent="DebugNode/VBoxContainer"]
-margin_top = 54.0
-margin_right = 40.0
-margin_bottom = 68.0
-
-[node name="Label5" type="Label" parent="DebugNode/VBoxContainer"]
-margin_top = 72.0
-margin_right = 40.0
-margin_bottom = 86.0
-
-[node name="Label6" type="Label" parent="DebugNode/VBoxContainer"]
-margin_top = 90.0
-margin_right = 40.0
-margin_bottom = 104.0
+[node name="SelectObjects" parent="." instance=ExtResource( 6 )]

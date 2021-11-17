@@ -20,8 +20,8 @@ namespace Soviet.Soviet.Scenes
 			var startPosition = new Vector3(0, 0, 0);
 			for (var i = 0; i < lenght; i++)
 			{
-				SetCellItem((int)startPosition.x + i, (int)startPosition.y, (int)startPosition.z, 2);
-				for (var j = 1; j < height; j++) SetCellItem(i, (int)startPosition.y, (int)startPosition.z + j, 0);
+				SetCellItem((int)startPosition.x + i, (int)startPosition.y, (int)startPosition.z, 1);
+				for (var j = 1; j < height; j++) SetCellItem(i, (int)startPosition.y, (int)startPosition.z + j, 1);
 			}
 		}
 	}

@@ -6,10 +6,25 @@ namespace Soviet.Soviet.Manager
 	public class TileManager : Node
 	{
 		private Control debug;
-
 		private GridMap floor;
 		private GridMap tree;
 		public static TileManager Instance { get; private set; }
+
+		public Vector3 GetCoordinatesGrid(ClippedCamera camera, int rayLenght = 10000)
+		{
+			var mousePos = GetViewport().GetMousePosition();
+			var from = camera.ProjectRayOrigin(mousePos);
+			var to = @from + camera.ProjectRayNormal(mousePos) * rayLenght;
+			var plane = new Plane(Vector3.Up, 0);
+			var position = plane.IntersectRay(@from, to);
+			if (position is null)
+			{
+				return new Vector3();
+			}
+			var gridPos=  tree.WorldToMap( ((Vector3) position).Floor());
+			gridPos.y = 0;
+			return (Vector3) gridPos;
+		}
 
 		public override void _Ready()
 		{
@@ -29,11 +44,7 @@ namespace Soviet.Soviet.Manager
 			var a = debug as DebugNode;
 			a?.GetNodes();
 		}
-
-		public Vector3 GetPositionCell(Vector3 to)
-		{
-			return floor.MapToWorld((int)to.x, (int)to.y, (int)to.z);
-		}
+		
 	}
 
 
