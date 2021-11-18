@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using Godot;
 using Soviet.Soviet.Manager;
 using Soviet.Soviet.Utils;
@@ -8,6 +9,7 @@ namespace Soviet.Soviet.CameraNode
 	public class Gimbal : Spatial
 	{
 		[Export] private readonly Vector3 speed = new Vector3(0, 0, 0);
+		private Vector2 lastPositionMouse = new Vector2();
 		private ClippedCamera camera;
 		private Spatial innerGimbal;
 
@@ -43,6 +45,7 @@ namespace Soviet.Soviet.CameraNode
 			if (Input.IsActionPressed("rotate_right")) velocity -= innerGimbal.Transform.basis.y;
 			innerGimbal.Rotation += velocity * delta * speed;
 		}
+		
 
 		private void Zoom(float delta)
 		{
@@ -52,18 +55,27 @@ namespace Soviet.Soviet.CameraNode
 			if (Input.IsActionPressed("cam_zoom_out")) velocity += Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
 			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
-			if (Input.IsActionJustReleased("cam_zoom_in")) velocity -= Transform.basis.y;
-			if (Input.IsActionJustReleased("cam_zoom_out")) velocity += Transform.basis.y;
 			velocity = velocity * speed * delta;
 			Translation += velocity;
 			Translation = new Vector3(Translation.x, Mathf.Clamp(Translation.y, 10, 25), Translation.z);
+		}
+
+		private Vector2 GetDisPlacementMouse()
+		{
+			var currentPosMouse = GetViewport().GetMousePosition();
+			var displacement = currentPosMouse - lastPositionMouse;
+			lastPositionMouse = currentPosMouse;
+			return displacement;
 		}
 		
 		
 		public override void _Input(InputEvent @event)
 		{
+
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
+			
+			
 			var position = TileManager.Instance.GetCoordinatesGrid(camera);
 			TileManager.Instance.CreateTileAt((int)TileConstTree.TreeTwo, position, (int)GridMapLayer.Tree);
 		}

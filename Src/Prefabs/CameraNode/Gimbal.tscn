@@ -7,7 +7,6 @@ script = ExtResource( 1 )
 speed = Vector3( 100, 100, 100 )
 
 [node name="InnerGimbal" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="ClippedCamera" type="ClippedCamera" parent="InnerGimbal"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
