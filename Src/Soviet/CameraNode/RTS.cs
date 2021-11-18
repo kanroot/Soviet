@@ -5,15 +5,30 @@ namespace Soviet.Soviet.CameraNode
 {
 	public class RTS : Spatial
 	{
-		[Export] private Vector3 speedMovement;
-		[Export] private int minElevation;
-		[Export] private int maxElevation;
-		[Export] private int rotationSpeed;
-		[Export] public bool InvertY;
-		private bool canRotate;
-		private Vector2 lastPosMouse;
+		//Child
 		private ClippedCamera camera;
+		private bool canRotate;
+
 		private Spatial elevation;
+
+		//rotate
+		[Export] public bool InvertY;
+		private Vector2 lastPosMouse;
+		[Export] private int maxElevation;
+		[Export] private int maxZoom;
+
+		[Export] private int minElevation;
+
+		//zoom
+		[Export] private int minZoom;
+
+		[Export] private int rotationSpeed;
+
+		//WASD
+		[Export] private Vector3 speedMovement;
+		[Export] private int speedZoom;
+		private int zoomDirection;
+
 		public override void _Ready()
 		{
 			elevation = GetChild<Spatial>(0);
@@ -24,6 +39,7 @@ namespace Soviet.Soviet.CameraNode
 		{
 			MoveWasd(delta);
 			Rotate(delta);
+			Zoom(delta);
 		}
 
 		private void MoveWasd(float delta)
@@ -43,6 +59,7 @@ namespace Soviet.Soviet.CameraNode
 			var displacement = GetMousePosition();
 			RotateLeftRight(delta, displacement.x);
 			RotateUpDown(delta, displacement.y);
+			Zoom(delta);
 		}
 
 		private Vector2 GetMousePosition()
@@ -55,7 +72,6 @@ namespace Soviet.Soviet.CameraNode
 
 		private void RotateLeftRight(float delta, float x)
 		{
-			GD.Print($"X: {x}");
 			var rotationDegrees = RotationDegrees;
 			rotationDegrees.y = x * delta * rotationSpeed;
 			RotationDegrees += rotationDegrees;
@@ -65,21 +81,24 @@ namespace Soviet.Soviet.CameraNode
 		{
 			var newRotation = elevation.RotationDegrees.x;
 			if (InvertY)
-			{
-				newRotation += (y * delta * rotationSpeed);
-			}
+				newRotation += y * delta * rotationSpeed;
 			else
-			{
-				newRotation -= (y * delta * rotationSpeed);
-			}
-			
+				newRotation -= y * delta * rotationSpeed;
 			var clamped = Mathf.Clamp(newRotation, minElevation, maxElevation);
 			var vector3 = new Vector3();
 			vector3.x = clamped;
 			elevation.RotationDegrees = vector3;
 		}
 
-	
+		private void Zoom(float delta)
+		{
+			var newZoom = Mathf.Clamp(camera.Translation.z + speedZoom * delta * zoomDirection, minZoom, maxZoom);
+			var zoom = camera.Translation;
+			zoom.z = newZoom;
+			camera.Translation = zoom;
+			zoomDirection = 0;
+		}
+
 
 		public override void _Input(InputEvent @event)
 		{
@@ -88,10 +107,10 @@ namespace Soviet.Soviet.CameraNode
 				canRotate = true;
 				lastPosMouse = GetViewport().GetMousePosition();
 			}
-			if (@event.IsActionReleased("cam_pan"))
-			{
-				canRotate = false;
-			}
+
+			if (@event.IsActionReleased("cam_pan")) canRotate = false;
+			if (@event.IsActionPressed("cam_zoom_out")) zoomDirection = 1;
+			if (@event.IsActionPressed("cam_zoom_in")) zoomDirection = -1;
 			if (!(@event is InputEventMouseButton eventMouseButton) || !eventMouseButton.Pressed ||
 			    eventMouseButton.ButtonIndex != 1) return;
 			var position = TileManager.Instance.GetCoordinatesGrid(camera);
