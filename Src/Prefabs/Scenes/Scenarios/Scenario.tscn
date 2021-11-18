@@ -10,8 +10,14 @@
 [node name="Scenario" type="Spatial"]
 
 [node name="Gimbal" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
-speed = Vector3( 10, 10, 10 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.28277, 0 )
+speedMovement = Vector3( 10, 0, 10 )
+minElevation = -90
+maxElevation = -50
+rotationSpeed = 1
+minZoom = 10
+speedZoom = 500
+maxZoom = 60
 
 [node name="Floor" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
