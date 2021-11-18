@@ -9,9 +9,9 @@ namespace Soviet.Soviet.Debug
 	{
 		private ClippedCamera camera;
 		private Spatial cameraElevation;
-		private Gimbal cameraGimbal;
 		[Export] private NodePath cameraPath;
 		private Label cameraPos;
+		private RTS cameraRts;
 		private Array countCells;
 		private Label elevation;
 		private GridMap floor;
@@ -28,8 +28,8 @@ namespace Soviet.Soviet.Debug
 
 		public override void _Ready()
 		{
-			cameraGimbal = GetNode<Gimbal>(cameraPath);
-			cameraElevation = cameraGimbal.GetChild<Spatial>(0);
+			cameraRts = GetNode<RTS>(cameraPath);
+			cameraElevation = cameraRts.GetChild<Spatial>(0);
 			camera = cameraElevation.GetChild<ClippedCamera>(0);
 			floor = GetNode<GridMap>(floorPath);
 			GetNodes();
@@ -37,10 +37,10 @@ namespace Soviet.Soviet.Debug
 
 		public override void _Process(float delta)
 		{
-			var x = cameraGimbal.Translation.x;
-			var z = cameraGimbal.Translation.z;
+			var x = cameraRts.Translation.x;
+			var z = cameraRts.Translation.z;
 			cameraPos.Text = $"Posicion:({x.ToString()} , {z.ToString()})";
-			elevation.Text = $"Elevacion: {cameraGimbal.Translation.y.ToString()}";
+			elevation.Text = $"Elevacion: {cameraRts.Translation.y.ToString()}";
 			textCountCells.Text = $"Cuenta de celdas: {countCells.Count.ToString()}";
 			textgrassCount.Text = $"Celdas de pasto: {grassCount.ToString()}";
 			textRiverCount.Text = $"Celdas de rio: {riverCount.ToString()}";
@@ -51,7 +51,7 @@ namespace Soviet.Soviet.Debug
 		public void GetNodes()
 		{
 			vBoxContainer = GetChild<VBoxContainer>(0);
-			cameraElevation = cameraGimbal.GetChild<Spatial>(0);
+			cameraElevation = cameraRts.GetChild<Spatial>(0);
 			cameraPos = vBoxContainer.GetChild<Label>(0);
 			elevation = vBoxContainer.GetChild<Label>(1);
 			textCountCells = vBoxContainer.GetChild<Label>(2);
